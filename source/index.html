@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #000767;
+            font-size: 20px;
+            font-family: sans-serif;
+            color: white;
+        }
+
+        div#container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            width: 50%;
+            left: 25%;
+            top: 20%;
+            text-align: center;
+        }
+
+        div#abas {
+            display: flex;
+            flex-direction: row;
+            gap: 50px;
+            justify-content: center;
+        }
+
+        span.aba {
+            border-bottom: 2px solid white;
+            padding: 0px 20px 10px 20px;
+            transition: 0.5s;
+        }
+
+        span.aba.timer {
+            border-bottom: 2px solid #000767;
+            padding: 0px 20px 10px 20px;
+        }
+
+        span.aba:hover {
+            border-bottom: 2px solid white;
+            cursor: pointer;
+        }
+
+        span#time {
+            font-size: 100pt;
+        }
+
+        div#actions {
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+            justify-content: center;
+        }
+
+        button.bts-acoes {
+            color: #000767;
+            background-color: white;
+            border: 2px solid white;
+            padding: 10px 50px;
+            border-radius: 20px;
+            transition: 0.5s;
+        }
+        
+        button.bts-acoes:hover {
+            background-color: #000767;
+            color: white;
+            border: 2px solid white;
+            transform: scale(1.1);
+            box-shadow: 0px 0px 25px black;
+            cursor: pointer;
+        }
+
+        input.info-timer-class {
+            width: 51px;
+            height: 40px;
+            font-size: 15pt;
+            padding-left: 5px;
+        }
+
+        input.info-timer-class:focus {
+            outline: none;
+        }
+
+        input.info-timer-class:hover {
+            cursor: pointer;
+        }
+
+        div#info-timer {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="abas">
+            <span class="aba cronometro" onclick="cronometro()">Crônometro</span><span class="aba timer" onclick="timer()">Timer</span>
+        </div>
+        <span id="time">00:00:00</span>
+        <div id="actions">
+            <div id="info-timer">
+                <input class="info-timer-class" value="0" type="number" id="info-timer-horas" max="23" min="0" placeholder="H">
+                <input class="info-timer-class" value="0" type="number" id="info-timer-minutos" max="59" min="0" placeholder="M">
+                <input class="info-timer-class" value="0" type="number" id="info-timer-segundos" max="59" min="0" placeholder="S">
+            </div>
+            <button class="bts-acoes zerar" onclick="zerar()">Zerar</button>
+            <button class="bts-acoes iniciar" onclick="iniciar()">Iniciar</button>
+            <button class="bts-acoes pausar" onclick="pausar()">Pausar</button>
+        </div>
+    </div>
+    <script> 
+        const spanTime = document.getElementById("time")
+        let time = new Date(0)
+        time.setHours( time.getHours() + 3)
+        let iniciado = false
+        let pausado = false
+        let zerado = false
+        const abaCronometro = document.getElementsByClassName("aba cronometro")[0]
+        const abaTimer = document.getElementsByClassName("aba timer")[0]
+        const btnZerar = document.getElementsByClassName("bts-acoes zerar")[0]
+        const divInfoTimer = document.getElementById("info-timer")
+        let intervalID
+
+        function zeroRight(n){
+            return n >= 10 ? n : `0${n}`
+        }
+
+
+        function escreverHora(){
+            let hou = zeroRight(time.getHours())
+            let min = zeroRight(time.getMinutes())
+            let sec = zeroRight(time.getSeconds())
+            spanTime.innerText = `${hou}:${min}:${sec}`
+        }
+
+        function iniciar(){
+            if (divInfoTimer.style.display === "block"){
+                let horasInformada = document.getElementById("info-timer-horas")
+                let minutosInformada = document.getElementById("info-timer-minutos")
+                let segundosInformada = document.getElementById("info-timer-segundos")
+                time.setHours(parseInt(horasInformada.value))
+                time.setMinutes(parseInt(minutosInformada.value))
+                time.setSeconds(parseInt(segundosInformada.value))
+                [pausado, iniciado, zerado] = [false, true, false]
+                intervalID = setInterval(function(){
+                        escreverHora()
+                        time.setSeconds(time.getSeconds() - 1)
+                    }, 1000)
+                } else if (!iniciado){
+                    [pausado, iniciado, zerado] = [false, true, false]
+                    intervalID = setInterval(function(){
+                        escreverHora()
+                        time.setSeconds(time.getSeconds() + 1)
+                    }, 1000)
+            }
+            
+        }
+
+        function pausar(){
+            [pausado, iniciado, zerado] = [true, false, false]
+            clearInterval(intervalID)
+        }
+
+        function zerar(){
+            [pausado, iniciado, zerado] = [false, false, true]
+            clearInterval(intervalID)
+            time = new Date(0)
+            time.setHours( time.getHours() + 3)
+            escreverHora()
+        }
+
+        function timer(){
+            clearInterval(intervalID)
+            time = new Date(0)
+            time.setHours( time.getHours() + 3)
+            escreverHora()
+            abaTimer.style.borderBottom = "2px solid white"
+            abaCronometro.style.borderBottom = "2px solid #000767"
+            btnZerar.style.display = "none"
+            divInfoTimer.style.display = "block"
+        }
+
+        function cronometro(){
+            clearInterval(intervalID)
+            time = new Date(0)
+            time.setHours( time.getHours() + 3)
+            escreverHora()
+            abaCronometro.style.borderBottom = "2px solid white"
+            abaTimer.style.borderBottom = "2px solid #000767"
+            btnZerar.style.display = "block"
+            divInfoTimer.style.display = "none"
+        }
+    </script>
+</body>
+</html>
