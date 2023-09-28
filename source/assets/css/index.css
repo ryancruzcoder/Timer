@@ -1,0 +1,96 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #000767;
+    font-size: 20px;
+    font-family: sans-serif;
+    color: white;
+}
+
+div#container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    width: 50%;
+    left: 25%;
+    top: 20%;
+    text-align: center;
+}
+
+div#abas {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    justify-content: center;
+}
+
+span.aba {
+    border-bottom: 2px solid white;
+    padding: 0px 20px 10px 20px;
+    transition: 0.5s;
+}
+
+span.aba.timer {
+    border-bottom: 2px solid #000767;
+    padding: 0px 20px 10px 20px;
+}
+
+span.aba:hover {
+    border-bottom: 2px solid white;
+    cursor: pointer;
+}
+
+span#time {
+    font-size: 100pt;
+}
+
+div#actions {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    justify-content: center;
+}
+
+button.bts-acoes {
+    color: #000767;
+    background-color: white;
+    border: 2px solid white;
+    padding: 10px 50px;
+    border-radius: 20px;
+    transition: 0.5s;
+}
+
+button.bts-acoes:hover {
+    background-color: #000767;
+    color: white;
+    border: 2px solid white;
+    transform: scale(1.1);
+    box-shadow: 0px 0px 25px black;
+    cursor: pointer;
+}
+
+input.info-timer-class {
+    width: 51px;
+    height: 40px;
+    font-size: 15pt;
+    padding-left: 5px;
+}
+
+input.info-timer-class:focus {
+    outline: none;
+}
+
+input.info-timer-class:hover {
+    cursor: pointer;
+}
+
+div#info-timer {
+    display: none;
+}
